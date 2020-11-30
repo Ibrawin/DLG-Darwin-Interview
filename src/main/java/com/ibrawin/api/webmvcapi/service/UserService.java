@@ -7,11 +7,11 @@ import java.util.Optional;
 
 public interface UserService {
 
-    Optional<User> findUserById(long id);
+    Optional<User> findUserById(int id);
 
     List<User> findAllUsers();
 
     User saveUser(User user);
 
-    void deleteUserById(long id);
+    void deleteUserById(int id);
 }

@@ -2,14 +2,17 @@ package com.ibrawin.api.webmvcapi.controller;
 
 import com.ibrawin.api.webmvcapi.model.User;
 import com.ibrawin.api.webmvcapi.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
+@RestController
+@RequestMapping(UserController.BASE_URL)
 public class UserController {
 
     public static final String BASE_URL = "/api/users";
-
 
     private final UserService userService;
 
@@ -17,19 +20,24 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping
     public List<User> getAllUsers() {
-        return null;
+        return userService.findAllUsers();
     }
 
-    public Optional<User> getUserById() {
-        return null;
+    @GetMapping("/{id}")
+    public Optional<User> getUserById(@PathVariable int id) {
+        return userService.findUserById(id);
     }
 
-    public User newUser() {
-        return null;
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public User newUser(@RequestBody User user) {
+        return userService.saveUser(user);
     }
 
-    public void removeUser() {
-
+    @DeleteMapping("/{id}")
+    public void removeUser(@PathVariable int id) {
+        userService.deleteUserById(id);
     }
 }

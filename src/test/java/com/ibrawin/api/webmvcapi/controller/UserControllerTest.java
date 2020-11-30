@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -55,18 +55,17 @@ class UserControllerTest {
     @Test
     void getUserByIdSuccess() throws Exception {
         User user = new User();
-        user.setId(1L);
-        when(userService.findUserById(1L)).thenReturn(Optional.of(user));
-
+        user.setId(1);
+        when(userService.findUserById(1)).thenReturn(Optional.of(user));
         mockMvc.perform(get(UserController.BASE_URL + "/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1L)));
+                .andExpect(jsonPath("$.id", equalTo(1)));
     }
 
     @Test
     void getUserByIdFailure() throws Exception {
-        when(userService.findUserById(1L)).thenThrow(UserNotFoundException.class);
+        when(userService.findUserById(1)).thenThrow(UserNotFoundException.class);
 
         mockMvc.perform(get(UserController.BASE_URL + "/{id}", 1))
                 .andExpect(status().isNotFound());
@@ -92,6 +91,6 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(userService).deleteUserById(anyLong());
+        verify(userService).deleteUserById(anyInt());
     }
 }

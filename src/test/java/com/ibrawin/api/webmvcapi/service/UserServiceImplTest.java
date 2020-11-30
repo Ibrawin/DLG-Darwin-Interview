@@ -30,7 +30,7 @@ class UserServiceImplTest {
     @Test
     public void findUserByIdSuccess() {
         User user = new User();
-        user.setId(1L);
+        user.setId(1);
         user.setFullName("Ibrahim Ayanbunmi");
         user.setEmail("ibrahim-ayanbunmi@live.co.uk");
         user.setPassword("12345");
@@ -38,9 +38,9 @@ class UserServiceImplTest {
         user.setDepartment("Engineer");
         user.setJobTitle("Software Engineer");
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
 
-        Optional<User> returnedUser = userService.findUserById(1L);
+        Optional<User> returnedUser = userService.findUserById(1);
 
         Assertions.assertEquals(user, returnedUser.get());
         Assertions.assertTrue(returnedUser.isPresent());
@@ -49,9 +49,9 @@ class UserServiceImplTest {
     @Test
     public void findUserByIdFailure() {
 
-        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+        when(userRepository.findById(1)).thenReturn(Optional.empty());
 
-        Optional<User> returnedUser = userService.findUserById(1L);
+        Optional<User> returnedUser = userService.findUserById(1);
 
         Assertions.assertFalse(returnedUser.isPresent());
     }
@@ -59,7 +59,7 @@ class UserServiceImplTest {
     @Test
     public void findAllUsers() {
         User user1 = new User();
-        user1.setId(1L);
+        user1.setId(1);
         user1.setFullName("Ibrahim Ayanbunmi");
         user1.setEmail("ibrahim-ayanbunmi@live.co.uk");
         user1.setPassword("12345");
@@ -68,7 +68,7 @@ class UserServiceImplTest {
         user1.setJobTitle("Software Engineer");
 
         User user2 = new User();
-        user2.setId(2L);
+        user2.setId(2);
         user2.setFullName("John Doe");
         user2.setEmail("aaaaa-bbbbb@live.co.uk");
         user2.setPassword("67890");
@@ -88,7 +88,7 @@ class UserServiceImplTest {
     @Test
     public void saveUser() {
         User user = new User();
-        user.setId(1L);
+        user.setId(1);
         user.setFullName("Ibrahim Ayanbunmi");
         user.setEmail("ibrahim-ayanbunmi@live.co.uk");
         user.setPassword("12345");
@@ -106,8 +106,8 @@ class UserServiceImplTest {
     @Test
     public void deleteUserById() {
 
-        userRepository.deleteById(1L);
+        userRepository.deleteById(1);
 
-        verify(userRepository, times(1)).deleteById(anyLong());
+        verify(userRepository, times(1)).deleteById(anyInt());
     }
 }
