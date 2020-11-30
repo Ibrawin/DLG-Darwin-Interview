@@ -2,8 +2,8 @@ package com.ibrawin.api.webmvcapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibrawin.api.webmvcapi.model.User;
+import com.ibrawin.api.webmvcapi.service.UserNotFoundException;
 import com.ibrawin.api.webmvcapi.service.UserService;
-import javassist.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -21,11 +21,9 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class UserControllerTest {
-
 
     private UserController userController;
 
@@ -39,6 +37,7 @@ class UserControllerTest {
         userService = Mockito.mock(UserService.class);
         userController = new UserController(userService);
         mockMvc = MockMvcBuilders.standaloneSetup(userController)
+                .setControllerAdvice(new RestResponseEntityExceptionHandler())
                 .build();
     }
 
@@ -67,7 +66,7 @@ class UserControllerTest {
 
     @Test
     void getUserByIdFailure() throws Exception {
-        when(userService.findUserById(1L)).thenThrow(NotFoundException.class);
+        when(userService.findUserById(1L)).thenThrow(UserNotFoundException.class);
 
         mockMvc.perform(get(UserController.BASE_URL + "/{id}", 1))
                 .andExpect(status().isNotFound());
